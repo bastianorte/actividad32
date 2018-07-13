@@ -1,0 +1,144 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf100
+{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red255\green255\blue255;}
+{\*\expandedcolortbl;;\csgray\c0;\csgray\c100000;}
+\margl1440\margr1440\vieww7080\viewh8400\viewkind0
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f0\fs22 \cf2 \cb3 \CocoaLigature0 Last login: Fri Jul  6 19:34:54 on ttys000\
+cd /Users/bastianortega/PostgreSQL/pg10;source pg10.env;bin/psql;exit\
+MacBook-Air-de-Bastian:~ bastianortega$ cd /Users/bastianortega/PostgreSQL/pg10;source pg10.env;bin/psql;exit\
+psql (10.4)\
+Type "help" for help.\
+\
+postgres=# CREATE DATABASE Pintagram;\
+CREATE DATABASE\
+postgres=# create table users(\
+postgres(# usuario varchar(20),\
+postgres(# serial primary key \
+postgres(# );\
+ERROR:  syntax error at or near "primary"\
+LINE 3: serial primary key\
+               ^\
+postgres=# create table users(                                                  usuario varchar(20),                                                            user_id serial primary key                                                      );\
+CREATE TABLE\
+postgres=# select * from users\
+postgres-# ;\
+ usuario | user_id \
+---------+---------\
+(0 rows)\
+\
+postgres=# create table imagenes(                                               imagen varchar(20),                                                             id serial primary key                                                           );\
+CREATE TABLE\
+postgres=# select * from imagenes\
+postgres-# ;\
+ imagen | id \
+--------+----\
+(0 rows)\
+\
+postgres=# create table tags(                                                   tags varchar(20),                                                               id serial primary key                                                           );\
+CREATE TABLE\
+postgres=# select * from tags                                                   ;                                                                                tags | id \
+------+----\
+(0 rows)\
+\
+postgres=# create table imagenes_tags(                                          tags_id integer,                                                                imagenes_id integer                                                             );\
+CREATE TABLE\
+postgres=# select * from imagenes_tags                                          ;                                                                                tags_id | imagenes_id \
+---------+-------------\
+(0 rows)\
+\
+postgres=# create table imagenes_like(                                          usuario_id integer,                                                             imagenes_id integer                                                             );\
+CREATE TABLE\
+postgres=# select * from imagenes_like                                          ;                                                                                usuario_id | imagenes_id \
+------------+-------------\
+(0 rows)\
+\
+postgres=# alter table imagenes_like add constraint unique(usuario_id,imagenes_id);\
+ERROR:  syntax error at or near "unique"\
+LINE 1: alter table imagenes_like add constraint unique(usuario_id,i...\
+                                                 ^\
+postgres=# alter table imagenes_like add constraint unico unique(usuario_id,imagenes_id);\
+ALTER TABLE\
+postgres=# select * from imagenes_like                                          ;\
+ usuario_id | imagenes_id \
+------------+-------------\
+(0 rows)\
+\
+postgres=# alter table imagenes_like add constraint unico unique(usuario_id,imagenes_id);postgres=# \
+postgres=# alter table imagenes_tags add constraint unico unique(imagenes_id,tags_id);\
+ERROR:  relation "unico" already exists\
+postgres=# alter table imagenes_tags add constraint unicotag unique(imagenes_id,tags_id);\
+ALTER TABLE\
+postgres=# insert into users(usuario) values(juan);\
+ERROR:  column "juan" does not exist\
+LINE 1: insert into users(usuario) values(juan);\
+                                          ^\
+postgres=# insert into users(usuario) values('juan');\
+INSERT 0 1\
+postgres=# select * from users                                                                                                                                  ;                                                                                                                                                                usuario | user_id \
+---------+---------\
+ juan    |       1\
+(1 row)\
+\
+postgres=# insert into users(usuario) values('pedro');\
+INSERT 0 1\
+postgres=# select * from users                                                                                                                                  ;\
+ usuario | user_id \
+---------+---------\
+ juan    |       1\
+ pedro   |       2\
+(2 rows)\
+\
+postgres=# insert into imagenes(imagen) values('perro.jpg');\
+INSERT 0 1\
+postgres=# insert into imagenes(imagen) values('gato.jpg');\
+INSERT 0 1\
+postgres=# select * from imagenes                                                                                                                               ;\
+  imagen   | id \
+-----------+----\
+ perro.jpg |  1\
+ gato.jpg  |  2\
+(2 rows)\
+\
+postgres=# insert into imagenes_like(usuario_id,imagenes_id) values(1,1);\
+INSERT 0 1\
+postgres=# insert into imagenes_like(usuario_id,imagenes_id) values(1,1);\
+ERROR:  duplicate key value violates unique constraint "unico"\
+DETAIL:  Key (usuario_id, imagenes_id)=(1, 1) already exists.\
+postgres=# insert into imagenes_like(usuario_id,imagenes_id) values(1,2);\
+INSERT 0 1\
+postgres=# insert into imagenes_like(usuario_id,imagenes_id) values(1,3);\
+INSERT 0 1\
+postgres=# insert into imagenes_like(usuario_id,imagenes_id) values(2,2);\
+INSERT 0 1\
+postgres=# insert into tags(tags) values('cocina');\
+INSERT 0 1\
+postgres=# insert into tags(tags) values('deportes');\
+INSERT 0 1\
+postgres=# insert into tags(tags) values('humor');\
+INSERT 0 1\
+postgres=# insert into tags(tags) values('realidad');\
+INSERT 0 1\
+postgres=# insert into tags(tags) values('ficcion');\
+INSERT 0 1\
+postgres=# insert into tags(tags) values('aventura');\
+INSERT 0 1\
+postgres=# insert into tags(tags) values('infantil');\
+INSERT 0 1\
+postgres=# insert into tags(tags) values('musica');\
+INSERT 0 1\
+postgres=# insert into imagenes_tags(tags_id,imagenes_id) values(1,1);\
+INSERT 0 1\
+postgres=# insert into imagenes_tags(tags_id,imagenes_id) values(2,1);\
+INSERT 0 1\
+postgres=# insert into imagenes_tags(tags_id,imagenes_id) values(3,1);\
+INSERT 0 1\
+postgres=# insert into imagenes_tags(tags_id,imagenes_id) values(4,2);\
+INSERT 0 1\
+postgres=# insert into imagenes_tags(tags_id,imagenes_id) values(5,2);\
+INSERT 0 1\
+postgres=# insert into imagenes_tags(tags_id,imagenes_id) values(6,2);\
+INSERT 0 1\
+postgres=# \
+}
